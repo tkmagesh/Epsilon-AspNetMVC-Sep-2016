@@ -1,0 +1,23 @@
+﻿@model BugTracker.Controllers.NewBugModel
+@{
+    Layout = null;
+}
+
+<section class="edit">
+   @using (Html.BeginForm("New", "Bugs"))
+   {
+        <label for="">Bug :</label>
+        @Html.TextBoxFor(model => model.Name)
+        <label>Is Closed ? :</label>
+        @Html.CheckBoxFor(model => model.IsClosed)
+        <label>Severity :</label>
+        @Html.Dro
+        <select name="Severity">
+            @foreach(var severity in Model.SeverityCodes)
+            {
+                <option value="@severity.Key">@severity.Value</option>
+            }
+        </select>
+        <input type="submit" value="Add New">
+   }
+</section>

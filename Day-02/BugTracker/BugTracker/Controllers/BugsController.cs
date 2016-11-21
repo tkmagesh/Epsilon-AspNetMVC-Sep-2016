@@ -11,15 +11,31 @@ namespace BugTracker.Controllers
     {
         public int ClosedCount;
         public IList<IBug> Bugs;
+        public NewBugModel NewBug = new NewBugModel();
+       
+    }
+    
+    public class NewBugModel
+    {
+        public string Name { get; set; }
+        public bool IsClosed { get; set; } = true;
+        public IList<KeyValuePair<string, string>> SeverityCodes;
+        public string Severity { get; set; }
     }
 
     public class BugsController : Controller
     {
 
         public static IList<IBug> bugs = new List<IBug>();
+        public IList<KeyValuePair<string, string>> SeverityCodes = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>("C","Critical"),
+            new KeyValuePair<string, string>("MC","Mission Critical"),
+        };
 
         static BugsController()
         {
+
             bugs.Add(new Bug { Id = 1, Name = "Server communication failure", IsClosed = false });
             bugs.Add(new Bug { Id = 2, Name = "User actions not recognized", IsClosed = true });
         }
@@ -29,7 +45,9 @@ namespace BugTracker.Controllers
             var viewModel = new BugViewModel
             {
                 ClosedCount = bugs.Count(bug => bug.IsClosed),
-                Bugs = bugs
+                Bugs = bugs,
+                NewBug = new NewBugModel() { SeverityCodes = this.SeverityCodes }
+               
             };
            
          
@@ -37,15 +55,15 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
-        public ActionResult New(string bugname)
+        public ActionResult New(NewBugModel newBugData)
         {
             
             var currentBugId = bugs.Aggregate(0, (result, bug) => result > bug.Id ? result : bug.Id) +1;
             var newBug = new Bug
             {
                 Id = currentBugId,
-                Name = bugname,
-                IsClosed = false
+                Name = newBugData.Name,
+                IsClosed = newBugData.IsClosed
             };
             bugs.Add(newBug);
             return RedirectToAction("Index");

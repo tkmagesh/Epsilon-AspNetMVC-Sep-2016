@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "title";
-  
+
 }
 
 <style>
@@ -38,15 +38,7 @@
 		<span> / </span>
 		<span>@Model.Bugs.Count</span>
 	</section>
-	<section class="edit">
-        <form method="post" action="/bugs/new">
-            <label for="">Bug :</label>
-            <input type="text" name="bugname" id="txtBug">
-            <label>Is Closed ? :</label>
-            <input type="checkbox" />
-            <input type="submit" value="Add New">
-        </form>
-	</section>
+	@{Html.RenderPartial("Create", Model.NewBug) ;}
 	<section class="list">
 		<ol>
             @foreach(var bug in Model.Bugs){
