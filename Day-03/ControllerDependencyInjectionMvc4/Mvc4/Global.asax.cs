@@ -37,7 +37,8 @@ namespace Mvc4
         private void RegisterCustomControllerFactory()
         {
             //IControllerFactory factory = new CustomControllerFactory("Mvc4.Controllers");
-            IControllerFactory factory = new CustomControllerFactory();
+            IControllerFactory customControllerFactory = new CustomControllerFactory();
+            ControllerBuilder.Current.SetControllerFactory(customControllerFactory);
         }
 
         private void RegisterMef()

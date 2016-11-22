@@ -4,14 +4,14 @@
 }
 
 <section class="edit">
-   @using (Html.BeginForm("New", "Bugs"))
+   @using (Ajax.BeginForm("New", new AjaxOptions() { InsertionMode=InsertionMode.InsertAfter, UpdateTargetId="bugList"}))
    {
         <label for="">Bug :</label>
         @Html.TextBoxFor(model => model.Name)
         <label>Is Closed ? :</label>
         @Html.CheckBoxFor(model => model.IsClosed)
         <label>Severity :</label>
-        @Html.Dro
+       
         <select name="Severity">
             @foreach(var severity in Model.SeverityCodes)
             {

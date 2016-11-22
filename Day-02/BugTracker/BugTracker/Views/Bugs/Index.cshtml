@@ -40,23 +40,15 @@
 	</section>
 	@{Html.RenderPartial("Create", Model.NewBug) ;}
 	<section class="list">
-		<ol>
-            @foreach(var bug in Model.Bugs){
-			<li>
-                @if(bug.IsClosed){
-                <span class="bugname closed">@bug.Name</span>
-                } else {
-                <span class="bugname">@bug.Name</span>
-                }
-				
-				<div class="datetime">[CreatedAt]</div>
-                <form method="post" action="/bugs/toggle">
-                    <input type="hidden" value="@bug.Id" name="Id"/>
-                    <input type="submit" value="Toggle"/>
-                </form>
-			</li>
+		<ol id="bugList" >
+            @foreach (var bug in Model.Bugs)
+            {
+                <li id="bug-@bug.Id">
+                    @{Html.RenderPartial("_Details", bug);
+                    }
+
+                </li>
             }
-			
-		</ol>
+</ol>
 		<input type="button" value="Remove Closed">
 	</section>

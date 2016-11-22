@@ -57,8 +57,7 @@ namespace BugTracker.Controllers
         [HttpPost]
         public ActionResult New(NewBugModel newBugData)
         {
-            
-            var currentBugId = bugs.Aggregate(0, (result, bug) => result > bug.Id ? result : bug.Id) +1;
+            var currentBugId = bugs.Aggregate(0, (result, bug) => result > bug.Id ? result : bug.Id) + 1;
             var newBug = new Bug
             {
                 Id = currentBugId,
@@ -66,8 +65,11 @@ namespace BugTracker.Controllers
                 IsClosed = newBugData.IsClosed
             };
             bugs.Add(newBug);
-            return RedirectToAction("Index");
-
+            if (!this.Request.IsAjaxRequest()){
+               
+                return RedirectToAction("Index");
+            }
+            return PartialView("_Details", newBug);
         }
 
         public ActionResult Toggle(int Id)
@@ -77,7 +79,14 @@ namespace BugTracker.Controllers
             {
                 bug.IsClosed = !bug.IsClosed;
             }
-            return RedirectToAction("Index");
+            if (!this.Request.IsAjaxRequest())
+            {
+
+                return RedirectToAction("Index");
+            }
+            return PartialView("_Details", bug);
+            //return RedirectToAction("Index");
+
         }
 
     }
